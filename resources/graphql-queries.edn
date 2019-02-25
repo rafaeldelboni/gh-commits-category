@@ -1,0 +1,17 @@
+{:user-repos "{
+  user(login: \"<user>\") {
+    repositories(first: 100 <last>) {
+      nodes {
+        name
+        id
+        description
+      },
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
+    }
+  }
+}"}
