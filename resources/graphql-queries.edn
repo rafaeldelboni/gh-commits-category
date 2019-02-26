@@ -1,17 +1,57 @@
-{:user-repos "{
-  user(login: \"<user>\") {
-    repositories(first: 100 <last>) {
-      nodes {
-        name
-        id
-        description
-      },
-      pageInfo {
-        endCursor
-        hasNextPage
-        hasPreviousPage
-        startCursor
-      }
-    }
-  }
-}"}
+{:user-commits
+ "query listRepos($queryString: String!, $afterPage: String) {
+   rateLimit {
+     cost
+     remaining
+     resetAt
+   }
+   search(query: $queryString, type: REPOSITORY, first: 100, after: $afterPage) {
+     repositoryCount
+     pageInfo {
+       endCursor
+       hasNextPage
+     }
+     edges {
+       node {
+         ... on Repository {
+           id
+           name
+           createdAt
+           description
+           isArchived
+           isPrivate
+           url
+           owner {
+             login
+             id
+             __typename
+             url
+           }
+           assignableUsers {
+             totalCount
+           }
+           licenseInfo {
+             key
+           }
+           defaultBranchRef {
+             target {
+               ... on Commit {
+                 history {
+                   totalCount
+                   edges {
+                     node {
+                       ... on Commit {
+                         committedDate
+                         message
+                       }
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+     }
+   }
+ }"}

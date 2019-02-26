@@ -5,39 +5,53 @@
             [cheshire.core :as json]
             [environ.core :refer [env]]))
 
+; config component
 (def ^:private gh-url "https://api.github.com/graphql")
 
 (def ^:private gh-token (env :gh-token))
 
-(def ^:private queries
-  (read-string (slurp (io/resource "graphql-queries.edn"))))
-
-(defn build-last [last]
-  (if (empty? last) "" (str ", after: \"" last "\"")))
-
-(defn build-query-user-repos [query user last]
-  {:query (clojure.string/replace
-            query
-            #"<user>|<last>"
-            {"<user>" user "<last>" (build-last last)})})
-
-(defn gh-http-post [user last]
+; http-client component
+(defn post! [body]
   (http/post
     gh-url
     {:as :json
      :headers {:authorization (str "bearer " gh-token)}
-     :body (json/encode (build-query-user-repos (:user-repos queries) user last))}))
+     :body (json/encode body)}))
 
-(defn get-my-repos [page]
-  (get-in (gh-http-post "rafaeldelboni" page) [:body :data :user :repositories]))
+; http/user-commits
+(def ^:private graphql-queries
+  (read-string (slurp (io/resource "graphql-queries.edn"))))
 
-(defn paginate-user-repos
-  [{nodes :nodes {hasNextPage :hasNextPage endCursor :endCursor} :pageInfo} acum]
-  (let [repos (conj acum nodes)]
-    (if hasNextPage
-      (recur (get-my-repos endCursor) repos) repos)))
+(defn build-user-commits-variables [user since after]
+  {:queryString (str "user:" user " is:public archived:false created:>" since)
+   :afterPage after})
+
+(defn build-user-commits-body [queries user since after]
+  {:query (:user-commits queries)
+   :variables (build-user-commits-variables user since after)})
+
+(defn get-user-commits [user since after acum]
+  (let [result
+        (get-in
+          (post!
+            (build-user-commits-body graphql-queries user since after))
+          [:body :data :search])
+        {edges :edges  {hasNextPage :hasNextPage endCursor :endCursor} :pageInfo} result]
+    (let [commits (into acum edges)]
+      (if hasNextPage
+        (recur user since endCursor commits)
+        commits))))
+
+; logic
+(defn flatten-commits [user-commits]
+  (map #(get-in % [:node :message])
+       (reduce into []
+               (map #(get-in % [:node :defaultBranchRef :target :history :edges])
+                    user-commits))))
+
+;(flatten-commits (get-user-commits "rafaeldelboni" "2016-01-01" nil []))
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!" (paginate-user-repos (get-my-repos "") nil)))
+  (println "Hello, World!"))
