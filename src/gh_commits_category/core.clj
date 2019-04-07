@@ -3,7 +3,8 @@
   (:require [clojure.java.io :as io]
             [clj-http.client :as http]
             [cheshire.core :as json]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [gh-commits-category.logic :as logic]))
 
 ; config component
 (def ^:private gh-url "https://api.github.com/graphql")
@@ -42,14 +43,7 @@
         (recur user since endCursor commits)
         commits))))
 
-; logic
-(defn flatten-commits [user-commits]
-  (map #(get-in % [:node :message])
-       (reduce into []
-               (map #(get-in % [:node :defaultBranchRef :target :history :edges])
-                    user-commits))))
-
-;(flatten-commits (get-user-commits "rafaeldelboni" "2016-01-01" nil []))
+;(logic/commits->category-map (get-user-commits "rafaeldelboni" "2016-01-01" nil []))
 
 (defn -main
   "I don't do a whole lot ... yet."
