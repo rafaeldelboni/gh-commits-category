@@ -35,7 +35,7 @@
     (t/is (= (l/split-commit "feat dasgurt") "feat dasgurt"))))
 
 (t/deftest commit->category-key-test
-  (t/testing "should split commit message by : or show full message"
+  (t/testing "should convert the commit into a category key"
     (t/is (= (l/commit->category-key "Feat") :feat))
     (t/is (= (l/commit->category-key "Fix") :fix))
     (t/is (= (l/commit->category-key "Refactor") :refac))
