@@ -1,0 +1,8 @@
+{:known-macros [
+  schema.core/defschema
+  compojure.api.sweet/context
+  compojure.api.sweet/GET
+  compojure.api.sweet/POST
+  compojure.api.sweet/PUT
+  compojure.api.sweet/DELETE
+]}
