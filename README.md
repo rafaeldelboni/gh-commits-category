@@ -1,44 +1,44 @@
 # gh-commits-category
 
-FIXME: description
+#### Consolidates [Semantic Commit Messages](https://seesparkbox.com/foundry/semantic_commit_messages) in Github per user
 
-## Installation
+## Built With
 
-Download from http://example.com/FIXME.
+* [Clojure](https://clojure.org/)
+* [Leiningen](https://leiningen.org/)
+* [Pedestal](https://github.com/pedestal/pedestal)
 
-## Usage
+## Getting Started
 
-FIXME: explanation
+These instructions will get the project up and running on your local machine for development and testing purposes.
 
-    $ java -jar gh-commits-category-0.1.0-standalone.jar [args]
+### Prerequisites
 
-## Options
+What things you need to install to run this project
 
-FIXME: listing of options this app accepts.
+* [Java](http://www.oracle.com/technetwork/pt/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Clojure](https://clojure.org/guides/getting_started)
+* [Leiningen](https://leiningen.org/)
 
-## Examples
+### Create your profiles.clj file
 
-...
+Based on `profiles.clj.sample` file create your own `profiles.clj`, you will need an [Github Api Key](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line) for this step.
 
-### Bugs
+### Restore dependencies
+```
+lein deps
+```
 
-...
+### Run the application
 
-### Any Other Sections
-### That You Think
-### Might be Useful
+```
+lein run
+```
+This command should start a server on [http://localhost:8080](http://localhost:8080).
 
-## License
+## Running the tests
 
-Copyright © 2019 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+To run unity the tests
+```
+lein test
+```
