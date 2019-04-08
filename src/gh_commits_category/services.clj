@@ -26,7 +26,7 @@
     {:swagger
      {:ui "/"
       :spec "/swagger.json"
-      :data {:info {:title "clojure-social-media-connections"
+      :data {:info {:title "gh-commits-category"
                     :description "API that extract user infos from Github's
                                  GraphQL API."}
              :tags [{:name "github commit semantic",
