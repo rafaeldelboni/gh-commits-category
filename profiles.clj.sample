@@ -1,1 +1,1 @@
-{:dev {:env {:gh-token "GITHUB-PERSONAL-ACCESS-TOKEN" :port "8080"}}}
+{:dev {:env {:gh-token "GITHUB-PERSONAL-ACCESS-TOKEN" :port "8080" :cors ".*"}}}

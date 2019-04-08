@@ -12,7 +12,8 @@
                  [metosin/compojure-api "2.0.0-alpha30"]
                  [prismatic/schema "1.1.10"]
                  [ring/ring-core "1.7.1"]
-                 [ring/ring-jetty-adapter "1.7.1"]]
+                 [ring/ring-jetty-adapter "1.7.1"]
+                 [ring-cors "0.1.13"]]
   :plugins [[lein-environ "1.1.0"]]
   :main ^:skip-aot gh-commits-category.core
   :target-path "target/%s"

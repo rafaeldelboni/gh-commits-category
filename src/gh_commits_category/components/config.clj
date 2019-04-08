@@ -12,6 +12,7 @@
   {:gh-url "https://api.github.com/graphql"
    :gh-token (env :gh-token)
    :graphql-queries (read-string (slurp (io/resource "graphql-queries.edn")))
-   :port (Integer/parseInt (or (env :port) "8080"))})
+   :port (Integer/parseInt (or (env :port) "8080"))
+   :cors (env :cors)})
 
 (defn new-config [input-map] (map->Config {:config (or input-map config-map)}))
