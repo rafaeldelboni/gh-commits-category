@@ -1,5 +1,7 @@
 # gh-commits-category
 
+[![Build Status](https://travis-ci.com/rafaeldelboni/gh-commits-category.svg?branch=master)](https://travis-ci.com/rafaeldelboni/gh-commits-category)
+
 #### Consolidates [Semantic Commit Messages](https://seesparkbox.com/foundry/semantic_commit_messages) in Github per user
 
 ## Built With
