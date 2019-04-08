@@ -10,7 +10,7 @@
     (assoc this :http-server
            (jetty/run-jetty
              (app github)
-             {:port (get-in config [:config :http-port])
+             {:port (get-in config [:config :port])
               :join? false})))
   (stop [this]
     (log/info "Stopping Web App")
