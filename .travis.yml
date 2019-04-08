@@ -6,3 +6,7 @@ script: lein do clean, javac, test
 branches:
   only:
     - master
+deploy:
+  provider: heroku
+  api_key: ${HEROKU_KEY}
+  app: gh-commits-category
