@@ -1,0 +1,8 @@
+language: clojure
+sudo: required
+lein: lein
+dist: xenial
+script: lein do clean, javac, test
+branches:
+  only:
+    - master
