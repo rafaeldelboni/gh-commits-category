@@ -1,51 +1,25 @@
 (ns gh-commits-category.core
   (:gen-class)
-  (:require [clojure.java.io :as io]
-            [clj-http.client :as http]
-            [cheshire.core :as json]
-            [environ.core :refer [env]]
-            [gh-commits-category.logic :as logic]))
+  (:require [com.stuartsierra.component :as component] 
+            [gh-commits-category.components.config :as config]
+            [gh-commits-category.components.http :as http-cli]
+            [gh-commits-category.components.github :as gh]
+            [gh-commits-category.logic :as logic]
+            [gh-commits-category.github.search :as search]
+            [gh-commits-category.server :as server]))
 
-; config component
-(def ^:private gh-url "https://api.github.com/graphql")
+(defn- build-system-map []
+  (component/system-map
+    :config (config/new-config config/config-map)
+    :http (http-cli/new-http)
+    :github (component/using (gh/new-gh) [:config :http])))
 
-(def ^:private gh-token (env :gh-token))
-
-; http-client component
-(defn post! [body]
-  (http/post
-    gh-url
-    {:as :json
-     :headers {:authorization (str "bearer " gh-token)}
-     :body (json/encode body)}))
-
-; http/user-commits
-(def ^:private graphql-queries
-  (read-string (slurp (io/resource "graphql-queries.edn"))))
-
-(defn build-user-commits-variables [user since after]
-  {:queryString (str "user:" user " is:public archived:false created:>" since)
-   :afterPage after})
-
-(defn build-user-commits-body [queries user since after]
-  {:query (:user-commits queries)
-   :variables (build-user-commits-variables user since after)})
-
-(defn get-user-commits [user since after acum]
-  (let [result
-        (get-in
-          (post!
-            (build-user-commits-body graphql-queries user since after))
-          [:body :data :search])
-        {edges :edges  {hasNextPage :hasNextPage endCursor :endCursor} :pageInfo} result]
-    (let [commits (into acum edges)]
-      (if hasNextPage
-        (recur user since endCursor commits)
-        commits))))
-
-;(logic/commits->category-map (get-user-commits "rafaeldelboni" "2016-01-01" nil []))
+(def system (atom nil))
 
 (defn -main
-  "I don't do a whole lot ... yet."
+  "The entry-point for 'lein run'"
   [& args]
-  (println "Hello, World!"))
+  (-> (build-system-map)
+      (server/start-system! system)))
+
+; (logic/commits->category-map (search/get-user-commits (:github @system) "rafaeldelboni" "2016-01-01" nil []))
