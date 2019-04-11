@@ -8,7 +8,7 @@
 
 * [Clojure](https://clojure.org/)
 * [Leiningen](https://leiningen.org/)
-* [Pedestal](https://github.com/pedestal/pedestal)
+* [compojure-api](https://github.com/metosin/compojure-api)
 
 ## Getting Started
 

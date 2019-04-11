@@ -9,6 +9,7 @@
       {:history
        {:edges [{:node {:message "feat: bla bla"}}
                 {:node {:message "fix: ble ble"}}
+                {:node {:message "Merge branch lho"}}
                 {:node {:message "refac: bli bli"}}]}}}}}
    {:node
     {:defaultBranchRef
@@ -43,15 +44,17 @@
     (t/is (= (l/commit->category-key "CHORE") :chore))
     (t/is (= (l/commit->category-key "Docs") :docs))
     (t/is (= (l/commit->category-key "Styles") :style))
+    (t/is (= (l/commit->category-key "Merge branch") :merge))
     (t/is (= (l/commit->category-key "Added some barara") :feat))
     (t/is (= (l/commit->category-key "Updated some bururu") :fix))
     (t/is (= (l/commit->category-key "initial commit") :other))))
 
 (t/deftest commits->category-key-map-test
-  (t/testing "should convert the complex github obj into a key vec"
+  (t/testing "should convert the commit list into key list"
     (t/is (= (l/commits->category-key-map sample-commits)
              [:feat
               :fix
+              :merge
               :refac
               :test
               :docs
@@ -63,6 +66,14 @@
               :feat]))))
 
 (t/deftest category-count-test
-  (t/testing "should convert the complex github obj into a str vec"
+  (t/testing "should reduce the key list into a map with key and value"
     (t/is (= (l/category-count (l/commits->category-key-map sample-commits))
-             {:feat 2 :fix 2 :refac 2 :test 1 :docs 1 :other 1 :chore 1 :style 1}))))
+             {:feat 2
+              :fix 2
+              :refac 2
+              :test 1
+              :docs 1
+              :other 1
+              :chore 1
+              :merge 1
+              :style 1}))))

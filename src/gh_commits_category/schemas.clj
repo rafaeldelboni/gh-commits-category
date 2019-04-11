@@ -9,4 +9,5 @@
    (s/optional-key :refac) s/Num
    (s/optional-key :other) s/Num
    (s/optional-key :test) s/Num
+   (s/optional-key :merge) s/Num
    (s/optional-key :style) s/Num})

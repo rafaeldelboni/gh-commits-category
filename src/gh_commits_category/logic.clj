@@ -14,6 +14,7 @@
       (str/includes? lc "chore") :chore
       (str/includes? lc "docs") :docs
       (str/includes? lc "style") :style
+      (str/includes? lc "merge") :merge
       (str/includes? lc "add") :feat
       (str/includes? lc "update") :fix
       :else :other)))

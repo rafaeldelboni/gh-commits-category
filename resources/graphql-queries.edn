@@ -5,7 +5,7 @@
      remaining
      resetAt
    }
-   search(query: $queryString, type: REPOSITORY, first: 100, after: $afterPage) {
+   search(query: $queryString, type: REPOSITORY, first: 1000, after: $afterPage) {
      repositoryCount
      pageInfo {
        endCursor
